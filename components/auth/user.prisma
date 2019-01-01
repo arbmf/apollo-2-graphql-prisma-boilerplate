@@ -1,0 +1,13 @@
+enum Role{
+  ADMIN,
+  USER,
+  UNKNOWN
+}
+
+type User {
+  id: ID! @id
+  name: String!
+  role: Role!
+  username: String! @unique
+  password: String!
+}

@@ -1,0 +1,27 @@
+#import User from "../../database/generated/prisma-graphql/prisma.graphql"
+#import Role from "../../database/generated/prisma-graphql/prisma.graphql"
+#### import Query.user from "../../database/generated/prisma-graphql/prisma.graphql"
+
+directive @auth(
+  requires: Role = UNKNOWN,
+) on OBJECT | FIELD_DEFINITION
+
+type Query{
+  user: User
+  users: [User] @auth(requires: ADMIN)
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type Mutation {
+  signup(name: String!, username: String!, password: String!, role:String!): AuthPayload!
+  login(username: String!, password: String!): AuthPayload!
+  createUser(name: String!, username: String!, password: String!, role:String!): AuthPayload! @auth(requires: ADMIN)
+  deleteUser(username: String, id: String): User @auth(requires: ADMIN)
+
+}
+
+
